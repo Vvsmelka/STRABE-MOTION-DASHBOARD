@@ -11,119 +11,98 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --g:    #0D4A3E;
-      --gl:   #1a6155;
-      --gold: #C9A96E;
-      --golm: #a8875a;
-      --goll: #dfc08e;
-      --cr:   #f5efe4;
-      --crd:  #e8dece;
-      --tx:   #1a1a1a;
-      --txm:  #5a5a5a;
-      --bd:   rgba(201,169,110,0.25);
-      --bds:  rgba(201,169,110,0.5);
+      --g:#0D4A3E;--gl:#1a6155;--gold:#C9A96E;--golm:#a8875a;--goll:#dfc08e;
+      --cr:#f5efe4;--crd:#e8dece;--tx:#1a1a1a;--txm:#5a5a5a;
+      --bd:rgba(201,169,110,0.25);--bds:rgba(201,169,110,0.5);
     }
-    html, body { min-height: 100vh; background: var(--cr); font-family: 'DM Sans', sans-serif; color: var(--tx); font-size: 14px; }
-
-    /* TOPBAR */
-    .topbar {
-      background: var(--g); padding: 14px 28px;
-      display: flex; align-items: center; justify-content: space-between;
-      border-bottom: 1px solid rgba(201,169,110,0.25);
-      position: sticky; top: 0; z-index: 50;
-    }
-    .logo-area { display: flex; align-items: center; gap: 10px; }
-    .logo-s { width: 36px; height: 36px; }
-    .logo-text { font-family: 'Cormorant Garamond', serif; color: var(--gold); letter-spacing: 0.18em; }
-    .brand-name { font-size: 19px; font-weight: 600; display: block; line-height: 1.1; }
-    .brand-sub  { font-size: 11px; font-weight: 400; letter-spacing: 0.22em; color: var(--golm); display: block; }
-    .topbar-right { display: flex; align-items: center; gap: 16px; }
-    .phase-badge { background: rgba(201,169,110,0.15); border: 1px solid var(--bds); color: var(--goll); font-size: 11px; letter-spacing: 0.1em; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
-    .topbar-date { color: rgba(201,169,110,0.55); font-size: 12px; letter-spacing: 0.04em; }
-    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #2a9d6f; display: inline-block; margin-right: 6px; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-    .live-label { font-size: 11px; color: rgba(201,169,110,0.6); letter-spacing: 0.08em; }
-
-    /* MAIN */
-    .main { padding: 28px 28px 48px; max-width: 1200px; margin: 0 auto; }
-    .section-title { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-weight: 500; letter-spacing: 0.2em; color: var(--golm); text-transform: uppercase; margin-bottom: 14px; margin-top: 28px; }
-    .section-title:first-child { margin-top: 0; }
-
-    /* METRICS */
-    .metrics-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; margin-bottom: 28px; }
-    .metric-card { background: var(--g); border: 1px solid rgba(201,169,110,0.2); border-radius: 12px; padding: 18px 20px; }
-    .metric-label { font-size: 10px; letter-spacing: 0.12em; color: rgba(201,169,110,0.5); text-transform: uppercase; margin-bottom: 8px; font-weight: 500; }
-    .metric-value { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 600; color: var(--gold); line-height: 1; margin-bottom: 6px; }
-    .metric-sub { font-size: 11px; color: rgba(201,169,110,0.4); }
-    .metric-bar { margin-top: 12px; height: 3px; background: rgba(201,169,110,0.1); border-radius: 2px; overflow: hidden; }
-    .metric-bar-fill { height: 100%; background: var(--gold); border-radius: 2px; opacity: 0.7; transition: width 0.6s ease; }
-
-    /* CONTENT GRID */
-    .content-grid { display: grid; grid-template-columns: 1fr 300px; gap: 20px; align-items: start; }
-
-    /* PANEL */
-    .panel { background: #fff; border: 1px solid var(--bd); border-radius: 12px; overflow: hidden; }
-    .panel-header { padding: 14px 20px; border-bottom: 1px solid var(--bd); display: flex; align-items: center; justify-content: space-between; background: rgba(13,74,62,0.025); }
-    .panel-title { font-size: 13px; font-weight: 500; color: var(--g); letter-spacing: 0.04em; }
-    .panel-action { font-size: 11px; color: var(--golm); cursor: pointer; letter-spacing: 0.06em; font-weight: 500; background: none; border: none; font-family: 'DM Sans', sans-serif; transition: color 0.15s; }
-    .panel-action:hover { color: var(--g); }
-
-    /* FILTERS */
-    .filter-row { display: flex; gap: 6px; padding: 12px 20px; border-bottom: 1px solid var(--bd); background: rgba(245,239,228,0.35); flex-wrap: wrap; }
-    .filter-btn { font-size: 11px; padding: 5px 14px; border-radius: 20px; border: 1px solid var(--bds); background: transparent; color: var(--txm); cursor: pointer; font-family: 'DM Sans', sans-serif; letter-spacing: 0.05em; transition: all 0.15s; }
-    .filter-btn.active { background: var(--g); color: var(--gold); border-color: var(--g); }
-    .filter-btn:hover:not(.active) { border-color: var(--g); color: var(--g); }
-
-    /* TABLE */
-    table { width: 100%; border-collapse: collapse; }
-    thead th { padding: 10px 20px; font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--txm); text-align: left; background: rgba(245,239,228,0.3); border-bottom: 1px solid var(--bd); }
-    tbody tr { border-bottom: 1px solid rgba(201,169,110,0.1); transition: background 0.12s; }
-    tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background: rgba(13,74,62,0.03); }
-    tbody td { padding: 12px 20px; font-size: 13px; color: var(--tx); vertical-align: middle; }
-    .td-name { font-weight: 500; }
-    .td-muted { color: var(--txm); font-size: 12px; }
-    .empty-row td { text-align: center; color: var(--txm); padding: 40px 20px; font-size: 13px; }
-    .loading-row td { text-align: center; color: var(--txm); padding: 40px 20px; font-size: 13px; }
-
-    /* BADGES */
-    .role-badge { display: inline-block; font-size: 10px; font-weight: 500; letter-spacing: 0.08em; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; }
-    .role-conductor   { background: rgba(13,74,62,0.1);    color: var(--g);    border: 1px solid rgba(13,74,62,0.2); }
-    .role-propietario { background: rgba(201,169,110,0.12); color: var(--golm); border: 1px solid rgba(201,169,110,0.3); }
-    .status-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 6px; vertical-align: middle; }
-    .dot-nuevo      { background: #2a9d6f; }
-    .dot-contactado { background: var(--gold); }
-    .dot-confirmado { background: var(--g); }
-    .zona-tag { font-size: 11px; color: var(--txm); background: rgba(245,239,228,0.8); border: 1px solid var(--bd); padding: 2px 8px; border-radius: 4px; }
-
-    /* SIDE */
-    .side-panel { display: flex; flex-direction: column; gap: 16px; }
-
-    /* PROGRESS */
-    .progress-panel { background: var(--g); border: 1px solid rgba(201,169,110,0.2); border-radius: 12px; padding: 20px 22px; }
-    .progress-heading { font-family: 'Cormorant Garamond', serif; font-size: 13px; letter-spacing: 0.16em; color: var(--gold); text-transform: uppercase; margin-bottom: 18px; }
-    .progress-item { margin-bottom: 16px; }
-    .progress-item:last-child { margin-bottom: 0; }
-    .progress-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
-    .progress-label { font-size: 12px; color: rgba(201,169,110,0.65); }
-    .progress-count { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: var(--gold); }
-    .progress-track { height: 4px; background: rgba(201,169,110,0.12); border-radius: 2px; overflow: hidden; }
-    .progress-fill { height: 100%; background: var(--gold); border-radius: 2px; opacity: 0.75; transition: width 0.6s ease; }
-    .progress-goal { font-size: 10px; color: rgba(201,169,110,0.35); margin-top: 5px; letter-spacing: 0.08em; }
-
-    /* ZONAS */
-    .zonas-panel { background: #fff; border: 1px solid var(--bd); border-radius: 12px; overflow: hidden; }
-    .zona-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; border-bottom: 1px solid rgba(201,169,110,0.1); font-size: 13px; }
-    .zona-row:last-child { border-bottom: none; }
-    .zona-name { color: var(--tx); font-weight: 500; font-size: 12px; }
-    .zona-count { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--g); font-weight: 600; }
-
-    /* TOAST */
-    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--g); border: 1px solid rgba(201,169,110,0.45); color: var(--goll); padding: 11px 20px; border-radius: 9px; font-size: 12px; font-weight: 500; letter-spacing: 0.06em; opacity: 0; transform: translateY(10px); transition: opacity 0.25s, transform 0.25s; pointer-events: none; z-index: 999; }
-    .toast.show { opacity: 1; transform: translateY(0); }
-
-    @media (max-width: 900px) { .content-grid { grid-template-columns: 1fr; } }
-    @media (max-width: 600px) { .metrics-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } .main { padding: 20px 16px 40px; } .topbar { padding: 12px 16px; } }
+    html,body{min-height:100vh;background:var(--cr);font-family:'DM Sans',sans-serif;color:var(--tx);font-size:14px;}
+    .topbar{background:var(--g);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(201,169,110,0.25);position:sticky;top:0;z-index:50;}
+    .logo-area{display:flex;align-items:center;gap:10px;}
+    .logo-s{width:36px;height:36px;}
+    .logo-text{font-family:'Cormorant Garamond',serif;color:var(--gold);letter-spacing:0.18em;}
+    .brand-name{font-size:19px;font-weight:600;display:block;line-height:1.1;}
+    .brand-sub{font-size:11px;letter-spacing:0.22em;color:var(--golm);display:block;}
+    .topbar-right{display:flex;align-items:center;gap:16px;}
+    .phase-badge{background:rgba(201,169,110,0.15);border:1px solid var(--bds);color:var(--goll);font-size:11px;letter-spacing:0.1em;padding:4px 12px;border-radius:20px;font-weight:500;}
+    .topbar-date{color:rgba(201,169,110,0.55);font-size:12px;}
+    .live-dot{width:7px;height:7px;border-radius:50%;background:#2a9d6f;display:inline-block;margin-right:6px;animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+    .live-label{font-size:11px;color:rgba(201,169,110,0.6);letter-spacing:0.08em;}
+    .main{padding:28px 28px 48px;max-width:1300px;margin:0 auto;}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:12px;font-weight:500;letter-spacing:0.2em;color:var(--golm);text-transform:uppercase;margin-bottom:14px;margin-top:28px;}
+    .section-title:first-child{margin-top:0;}
+    .metrics-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:28px;}
+    .metric-card{background:var(--g);border:1px solid rgba(201,169,110,0.2);border-radius:12px;padding:18px 20px;}
+    .metric-label{font-size:10px;letter-spacing:0.12em;color:rgba(201,169,110,0.5);text-transform:uppercase;margin-bottom:8px;font-weight:500;}
+    .metric-value{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:600;color:var(--gold);line-height:1;margin-bottom:6px;}
+    .metric-sub{font-size:11px;color:rgba(201,169,110,0.4);}
+    .metric-bar{margin-top:12px;height:3px;background:rgba(201,169,110,0.1);border-radius:2px;overflow:hidden;}
+    .metric-bar-fill{height:100%;background:var(--gold);border-radius:2px;opacity:0.7;transition:width 0.6s ease;}
+    .content-grid{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start;}
+    .panel{background:#fff;border:1px solid var(--bd);border-radius:12px;overflow:hidden;}
+    .panel-header{padding:14px 20px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;background:rgba(13,74,62,0.025);}
+    .panel-title{font-size:13px;font-weight:500;color:var(--g);letter-spacing:0.04em;}
+    .panel-action{font-size:11px;color:var(--golm);cursor:pointer;letter-spacing:0.06em;font-weight:500;background:none;border:none;font-family:'DM Sans',sans-serif;transition:color 0.15s;}
+    .panel-action:hover{color:var(--g);}
+    .filter-row{display:flex;gap:6px;padding:12px 20px;border-bottom:1px solid var(--bd);background:rgba(245,239,228,0.35);flex-wrap:wrap;}
+    .filter-btn{font-size:11px;padding:5px 14px;border-radius:20px;border:1px solid var(--bds);background:transparent;color:var(--txm);cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:0.05em;transition:all 0.15s;}
+    .filter-btn.active{background:var(--g);color:var(--gold);border-color:var(--g);}
+    .filter-btn:hover:not(.active){border-color:var(--g);color:var(--g);}
+    table{width:100%;border-collapse:collapse;}
+    thead th{padding:10px 16px;font-size:10px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--txm);text-align:left;background:rgba(245,239,228,0.3);border-bottom:1px solid var(--bd);white-space:nowrap;}
+    tbody tr{border-bottom:1px solid rgba(201,169,110,0.1);transition:background 0.12s;}
+    tbody tr:last-child{border-bottom:none;}
+    tbody tr:hover{background:rgba(13,74,62,0.03);}
+    tbody td{padding:11px 16px;font-size:13px;color:var(--tx);vertical-align:middle;}
+    .td-name{font-weight:500;}
+    .td-muted{color:var(--txm);font-size:12px;}
+    .empty-row td,.loading-row td{text-align:center;color:var(--txm);padding:40px 20px;font-size:13px;}
+    .role-badge{display:inline-block;font-size:10px;font-weight:500;letter-spacing:0.08em;padding:3px 10px;border-radius:20px;text-transform:uppercase;}
+    .role-conductor{background:rgba(13,74,62,0.1);color:var(--g);border:1px solid rgba(13,74,62,0.2);}
+    .role-propietario{background:rgba(201,169,110,0.12);color:var(--golm);border:1px solid rgba(201,169,110,0.3);}
+    .zona-tag{font-size:11px;color:var(--txm);background:rgba(245,239,228,0.8);border:1px solid var(--bd);padding:2px 8px;border-radius:4px;white-space:nowrap;}
+    .estado-badge{font-size:10px;padding:3px 8px;border-radius:20px;font-weight:500;}
+    .estado-nuevo{background:rgba(42,157,111,0.1);color:#1a7a4a;border:1px solid rgba(42,157,111,0.25);}
+    .estado-contactado{background:rgba(201,169,110,0.12);color:var(--golm);border:1px solid var(--bds);}
+    .estado-confirmado{background:rgba(13,74,62,0.1);color:var(--g);border:1px solid rgba(13,74,62,0.2);}
+    .delete-btn{background:none;border:none;color:rgba(192,57,43,0.35);cursor:pointer;font-size:16px;padding:2px 6px;border-radius:4px;transition:color 0.15s,background 0.15s;}
+    .delete-btn:hover{color:#c0392b;background:rgba(192,57,43,0.08);}
+    .side-panel{display:flex;flex-direction:column;gap:16px;}
+    .form-panel{background:#fff;border:1px solid var(--bd);border-radius:12px;overflow:hidden;}
+    .form-inner{padding:18px 20px;}
+    .form-group{margin-bottom:12px;}
+    .form-label{font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--txm);display:block;margin-bottom:5px;}
+    .form-input,.form-select{width:100%;padding:9px 12px;border:1px solid var(--bds);border-radius:8px;font-size:13px;color:var(--tx);background:var(--cr);font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.15s;appearance:none;}
+    .form-input:focus,.form-select:focus{border-color:var(--g);background:#fff;}
+    .form-input::placeholder{color:#bbb;}
+    .role-toggle{display:flex;gap:6px;margin-bottom:12px;}
+    .role-btn{flex:1;padding:8px;border-radius:8px;border:1px solid var(--bds);background:transparent;font-size:11px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;transition:all 0.15s;font-family:'DM Sans',sans-serif;color:var(--txm);}
+    .role-btn.active-conductor{background:var(--g);color:var(--gold);border-color:var(--g);}
+    .role-btn.active-propietario{background:var(--gold);color:var(--g);border-color:var(--gold);}
+    .submit-btn{width:100%;padding:11px;background:var(--g);color:var(--gold);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:background 0.15s;margin-top:4px;}
+    .submit-btn:hover:not(:disabled){background:var(--gl);}
+    .submit-btn:disabled{opacity:0.5;cursor:not-allowed;}
+    .form-msg{font-size:12px;border-radius:6px;padding:8px 12px;margin-top:10px;display:none;}
+    .form-msg.error{color:#c0392b;background:#fdf0ef;border:1px solid #f5c6c2;display:block;}
+    .form-msg.ok{color:#1a7a4a;background:#edfaf3;border:1px solid #a3e6c4;display:block;}
+    .progress-panel{background:var(--g);border:1px solid rgba(201,169,110,0.2);border-radius:12px;padding:20px 22px;}
+    .progress-heading{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:0.16em;color:var(--gold);text-transform:uppercase;margin-bottom:18px;}
+    .progress-item{margin-bottom:16px;}
+    .progress-item:last-child{margin-bottom:0;}
+    .progress-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
+    .progress-label{font-size:12px;color:rgba(201,169,110,0.65);}
+    .progress-count{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);}
+    .progress-track{height:4px;background:rgba(201,169,110,0.12);border-radius:2px;overflow:hidden;}
+    .progress-fill{height:100%;background:var(--gold);border-radius:2px;opacity:0.75;transition:width 0.6s ease;}
+    .progress-goal{font-size:10px;color:rgba(201,169,110,0.35);margin-top:5px;letter-spacing:0.08em;}
+    .zona-row{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid rgba(201,169,110,0.1);}
+    .zona-row:last-child{border-bottom:none;}
+    .zona-name{color:var(--tx);font-weight:500;font-size:12px;}
+    .zona-count{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--g);font-weight:600;}
+    .toast{position:fixed;bottom:24px;right:24px;background:var(--g);border:1px solid rgba(201,169,110,0.45);color:var(--goll);padding:11px 20px;border-radius:9px;font-size:12px;font-weight:500;letter-spacing:0.06em;opacity:0;transform:translateY(10px);transition:opacity 0.25s,transform 0.25s;pointer-events:none;z-index:999;}
+    .toast.show{opacity:1;transform:translateY(0);}
+    @media(max-width:1000px){.content-grid{grid-template-columns:1fr;}}
+    @media(max-width:600px){.metrics-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.main{padding:20px 16px 40px;}.topbar{padding:12px 16px;}.topbar-date{display:none;}}
   </style>
 </head>
 <body>
@@ -148,30 +127,10 @@
 <main class="main">
   <p class="section-title">Resumen de validación</p>
   <div class="metrics-grid">
-    <div class="metric-card">
-      <div class="metric-label">Conductores</div>
-      <div class="metric-value" id="m-conductores">—</div>
-      <div class="metric-sub">objetivo 500</div>
-      <div class="metric-bar"><div class="metric-bar-fill" id="mb-conductores" style="width:0%"></div></div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">Propietarios</div>
-      <div class="metric-value" id="m-propietarios">—</div>
-      <div class="metric-sub">objetivo 50</div>
-      <div class="metric-bar"><div class="metric-bar-fill" id="mb-propietarios" style="width:0%"></div></div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">Total usuarios</div>
-      <div class="metric-value" id="m-total">—</div>
-      <div class="metric-sub">registrados</div>
-      <div class="metric-bar"><div class="metric-bar-fill" id="mb-total" style="width:0%"></div></div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">Esta semana</div>
-      <div class="metric-value" id="m-semana">—</div>
-      <div class="metric-sub">nuevos registros</div>
-      <div class="metric-bar"><div class="metric-bar-fill" id="mb-semana" style="width:0%"></div></div>
-    </div>
+    <div class="metric-card"><div class="metric-label">Conductores</div><div class="metric-value" id="m-c">—</div><div class="metric-sub">objetivo 500</div><div class="metric-bar"><div class="metric-bar-fill" id="mb-c" style="width:0%"></div></div></div>
+    <div class="metric-card"><div class="metric-label">Propietarios</div><div class="metric-value" id="m-p">—</div><div class="metric-sub">objetivo 50</div><div class="metric-bar"><div class="metric-bar-fill" id="mb-p" style="width:0%"></div></div></div>
+    <div class="metric-card"><div class="metric-label">Total usuarios</div><div class="metric-value" id="m-t">—</div><div class="metric-sub">registrados</div><div class="metric-bar"><div class="metric-bar-fill" id="mb-t" style="width:0%"></div></div></div>
+    <div class="metric-card"><div class="metric-label">Esta semana</div><div class="metric-value" id="m-s">—</div><div class="metric-sub">nuevos registros</div><div class="metric-bar"><div class="metric-bar-fill" id="mb-s" style="width:0%"></div></div></div>
   </div>
 
   <div class="content-grid">
@@ -188,47 +147,60 @@
           <button class="filter-btn" onclick="filterUsers('propietario',this)">Propietarios</button>
         </div>
         <table>
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Rol</th>
-              <th>Zona</th>
-              <th>Teléfono</th>
-              <th>Email</th>
-              <th>Registro</th>
-            </tr>
-          </thead>
-          <tbody id="users-body">
-            <tr class="loading-row"><td colspan="6">Cargando usuarios...</td></tr>
-          </tbody>
+          <thead><tr><th>Nombre</th><th>Rol</th><th>Zona</th><th>Teléfono</th><th>Email</th><th>Estado</th><th>Registro</th><th></th></tr></thead>
+          <tbody id="users-body"><tr class="loading-row"><td colspan="8">Cargando...</td></tr></tbody>
         </table>
       </div>
     </div>
 
     <div class="side-panel">
-      <p class="section-title" style="margin-top:0">Progreso MVP</p>
-      <div class="progress-panel">
-        <div class="progress-heading">Hacia el lanzamiento</div>
-        <div class="progress-item">
-          <div class="progress-row">
-            <span class="progress-label">Conductores</span>
-            <span class="progress-count" id="p-conductores">— / 500</span>
+      <p class="section-title" style="margin-top:0">Añadir usuario</p>
+      <div class="form-panel">
+        <div class="panel-header"><span class="panel-title">Alta manual</span></div>
+        <div class="form-inner">
+          <div class="role-toggle">
+            <button class="role-btn active-conductor" id="rb-c" onclick="setRole('conductor')">Conductor</button>
+            <button class="role-btn" id="rb-p" onclick="setRole('propietario')">Propietario</button>
           </div>
-          <div class="progress-track"><div class="progress-fill" id="pf-conductores" style="width:0%"></div></div>
-          <div class="progress-goal" id="pg-conductores">Cargando...</div>
+          <div class="form-group"><label class="form-label">Nombre completo</label><input class="form-input" id="f-nombre" type="text" placeholder="Iker Madariaga"></div>
+          <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="f-email" type="email" placeholder="correo@ejemplo.com"></div>
+          <div class="form-group"><label class="form-label">Teléfono</label><input class="form-input" id="f-phone" type="tel" placeholder="+34 600 000 000"></div>
+          <div class="form-group">
+            <label class="form-label">Zona</label>
+            <select class="form-select" id="f-zona">
+              <option value="">Seleccionar zona</option>
+              <option>Abando</option><option>Deusto</option><option>Santutxu</option><option>Basurto</option><option>Casco Viejo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Estado</label>
+            <select class="form-select" id="f-estado">
+              <option value="nuevo">Nuevo</option>
+              <option value="contactado">Contactado</option>
+              <option value="confirmado">Confirmado</option>
+            </select>
+          </div>
+          <button class="submit-btn" id="add-btn" onclick="addUser()">Añadir usuario →</button>
+          <div class="form-msg" id="form-msg"></div>
+        </div>
+      </div>
+
+      <div class="progress-panel">
+        <div class="progress-heading">Progreso MVP</div>
+        <div class="progress-item">
+          <div class="progress-row"><span class="progress-label">Conductores</span><span class="progress-count" id="p-c">— / 500</span></div>
+          <div class="progress-track"><div class="progress-fill" id="pf-c" style="width:0%"></div></div>
+          <div class="progress-goal" id="pg-c">Cargando...</div>
         </div>
         <div class="progress-item">
-          <div class="progress-row">
-            <span class="progress-label">Propietarios</span>
-            <span class="progress-count" id="p-propietarios">— / 50</span>
-          </div>
-          <div class="progress-track"><div class="progress-fill" id="pf-propietarios" style="width:0%"></div></div>
-          <div class="progress-goal" id="pg-propietarios">Cargando...</div>
+          <div class="progress-row"><span class="progress-label">Propietarios</span><span class="progress-count" id="p-p">— / 50</span></div>
+          <div class="progress-track"><div class="progress-fill" id="pf-p" style="width:0%"></div></div>
+          <div class="progress-goal" id="pg-p">Cargando...</div>
         </div>
       </div>
 
       <p class="section-title">Por zona</p>
-      <div class="zonas-panel panel">
+      <div class="panel">
         <div class="panel-header"><span class="panel-title">Distribución Bilbao</span></div>
         <div id="zonas-list"></div>
       </div>
@@ -244,63 +216,50 @@ const sb = supabase.createClient(
   'sb_publishable_EXd56lcvdd0ogbe-hwmrQw_sVwNHNH8'
 );
 
-let allUsers     = [];
-let currentFilter = 'todos';
+let allUsers = [], currentFilter = 'todos', roleSelected = 'conductor';
 
-// INIT
 document.getElementById('today-date').textContent = new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
-loadUsers();
-subscribeRealtime();
 
-// LOAD
+(async () => {
+  await loadUsers();
+  subscribeRealtime();
+})();
+
 async function loadUsers() {
-  try {
-    const { data, error } = await sb.from('usuarios').select('*').order('created_at', { ascending: false });
-    if (error) throw error;
-    allUsers = data || [];
-  } catch(e) {
-    allUsers = [];
-  }
+  const { data, error } = await sb.from('usuarios').select('*').order('created_at',{ascending:false});
+  if (error) console.error('Error cargando usuarios:', error.message);
+  allUsers = data || [];
   renderAll();
 }
 
-// REALTIME — se actualiza automáticamente cuando alguien se registra
 function subscribeRealtime() {
-  sb.channel('usuarios-changes')
-    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'usuarios' }, payload => {
-      allUsers.unshift(payload.new);
+  sb.channel('usuarios-rt')
+    .on('postgres_changes', { event:'*', schema:'public', table:'usuarios' }, payload => {
+      if      (payload.eventType === 'INSERT') { allUsers.unshift(payload.new); showToast('Nuevo usuario: '+(payload.new.nombre||payload.new.email||'—')); }
+      else if (payload.eventType === 'DELETE') { allUsers = allUsers.filter(u => u.id !== payload.old.id); }
       renderAll();
-      showToast('Nuevo usuario: ' + (payload.new.nombre || payload.new.email));
     })
     .subscribe();
 }
 
-function renderAll() {
-  renderTable();
-  updateMetrics();
-  renderZonas();
-}
+function renderAll() { renderTable(); updateMetrics(); renderZonas(); }
 
-// TABLE
 function renderTable() {
   const tbody = document.getElementById('users-body');
-  let data = allUsers;
-  if (currentFilter === 'conductor')   data = allUsers.filter(u => u.rol === 'conductor');
-  if (currentFilter === 'propietario') data = allUsers.filter(u => u.rol === 'propietario');
-
-  if (!data.length) {
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No hay usuarios todavía</td></tr>';
-    return;
-  }
+  let data = currentFilter === 'todos' ? allUsers : allUsers.filter(u => u.rol === currentFilter);
+  if (!data.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="8">No hay usuarios todavía</td></tr>'; return; }
   tbody.innerHTML = data.map(u => {
-    const fecha = u.created_at ? new Date(u.created_at).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'}) : '—';
+    const fecha  = u.created_at ? new Date(u.created_at).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'}) : '—';
+    const estado = u.estado || 'nuevo';
     return `<tr>
       <td class="td-name">${esc(u.nombre||'—')}</td>
       <td><span class="role-badge ${u.rol==='conductor'?'role-conductor':'role-propietario'}">${u.rol||'—'}</span></td>
       <td><span class="zona-tag">${esc(u.zona||'—')}</span></td>
       <td class="td-muted">${esc(u.telefono||'—')}</td>
       <td class="td-muted">${esc(u.email||'—')}</td>
+      <td><span class="estado-badge estado-${estado}">${cap(estado)}</span></td>
       <td class="td-muted">${fecha}</td>
+      <td><button class="delete-btn" onclick="deleteUser('${u.id}','${esc(u.nombre||u.email||'')}')">×</button></td>
     </tr>`;
   }).join('');
 }
@@ -312,65 +271,89 @@ function filterUsers(f, btn) {
   renderTable();
 }
 
-// METRICS
 function updateMetrics() {
-  const c = allUsers.filter(u => u.rol === 'conductor').length;
-  const p = allUsers.filter(u => u.rol === 'propietario').length;
-  const total = allUsers.length;
+  const c = allUsers.filter(u=>u.rol==='conductor').length;
+  const p = allUsers.filter(u=>u.rol==='propietario').length;
+  const t = allUsers.length;
   const hace7 = new Date(); hace7.setDate(hace7.getDate()-7);
-  const semana = allUsers.filter(u => u.created_at && new Date(u.created_at) > hace7).length;
-
-  document.getElementById('m-conductores').textContent  = c;
-  document.getElementById('m-propietarios').textContent = p;
-  document.getElementById('m-total').textContent        = total;
-  document.getElementById('m-semana').textContent       = semana;
-
-  const cp = Math.min(Math.round((c/500)*100),100);
-  const pp = Math.min(Math.round((p/50)*100),100);
-  document.getElementById('mb-conductores').style.width  = cp+'%';
-  document.getElementById('mb-propietarios').style.width = pp+'%';
-  document.getElementById('mb-total').style.width = Math.min(Math.round((total/550)*100),100)+'%';
-  document.getElementById('mb-semana').style.width = Math.min(semana*10,100)+'%';
-
-  document.getElementById('p-conductores').textContent  = c+' / 500';
-  document.getElementById('p-propietarios').textContent = p+' / 50';
-  document.getElementById('pf-conductores').style.width  = cp+'%';
-  document.getElementById('pf-propietarios').style.width = pp+'%';
-  document.getElementById('pg-conductores').textContent  = c>=500 ? '¡Objetivo alcanzado!' : 'Faltan '+(500-c);
-  document.getElementById('pg-propietarios').textContent = p>=50  ? '¡Objetivo alcanzado!' : 'Faltan '+(50-p);
+  const s = allUsers.filter(u=>u.created_at&&new Date(u.created_at)>hace7).length;
+  document.getElementById('m-c').textContent=c; document.getElementById('m-p').textContent=p;
+  document.getElementById('m-t').textContent=t; document.getElementById('m-s').textContent=s;
+  const cp=Math.min(Math.round((c/500)*100),100), pp=Math.min(Math.round((p/50)*100),100);
+  document.getElementById('mb-c').style.width=cp+'%'; document.getElementById('mb-p').style.width=pp+'%';
+  document.getElementById('mb-t').style.width=Math.min(Math.round((t/550)*100),100)+'%';
+  document.getElementById('mb-s').style.width=Math.min(s*10,100)+'%';
+  document.getElementById('p-c').textContent=c+' / 500'; document.getElementById('p-p').textContent=p+' / 50';
+  document.getElementById('pf-c').style.width=cp+'%'; document.getElementById('pf-p').style.width=pp+'%';
+  document.getElementById('pg-c').textContent=c>=500?'¡Objetivo alcanzado!':'Faltan '+(500-c);
+  document.getElementById('pg-p').textContent=p>=50?'¡Objetivo alcanzado!':'Faltan '+(50-p);
 }
 
-// ZONAS
 function renderZonas() {
-  const zonas = ['Abando','Deusto','Casco Viejo','Santutxu','Basurto'];
-  const counts = {};
-  zonas.forEach(z => counts[z] = 0);
-  allUsers.forEach(u => { if (u.zona && counts[u.zona] !== undefined) counts[u.zona]++; });
-  document.getElementById('zonas-list').innerHTML = zonas.map(z =>
+  const zonas=['Abando','Deusto','Casco Viejo','Santutxu','Basurto'];
+  const counts={}; zonas.forEach(z=>counts[z]=0);
+  allUsers.forEach(u=>{if(u.zona&&counts[u.zona]!==undefined)counts[u.zona]++;});
+  document.getElementById('zonas-list').innerHTML=zonas.map(z=>
     `<div class="zona-row"><span class="zona-name">${z}</span><span class="zona-count">${counts[z]}</span></div>`
   ).join('');
 }
 
-// EXPORT
+function setRole(r) {
+  roleSelected=r;
+  document.getElementById('rb-c').className='role-btn'+(r==='conductor'?' active-conductor':'');
+  document.getElementById('rb-p').className='role-btn'+(r==='propietario'?' active-propietario':'');
+}
+
+async function addUser() {
+  const nombre=document.getElementById('f-nombre').value.trim();
+  const email =document.getElementById('f-email').value.trim();
+  const phone =document.getElementById('f-phone').value.trim();
+  const zona  =document.getElementById('f-zona').value;
+  const estado=document.getElementById('f-estado').value;
+  const msg   =document.getElementById('form-msg');
+  const btn   =document.getElementById('add-btn');
+  msg.className='form-msg';
+  if(!nombre||!email||!zona){msg.textContent='Rellena nombre, email y zona';msg.className='form-msg error';return;}
+  btn.disabled=true; btn.textContent='Guardando...';
+  const {error}=await sb.from('usuarios').insert({nombre,email,telefono:phone,zona,rol:roleSelected,estado,created_at:new Date().toISOString()});
+  if(error){msg.textContent='Error: '+error.message;msg.className='form-msg error';}
+  else{
+    msg.textContent='✓ Usuario añadido correctamente';msg.className='form-msg ok';
+    document.getElementById('f-nombre').value='';document.getElementById('f-email').value='';
+    document.getElementById('f-phone').value='';document.getElementById('f-zona').value='';
+    document.getElementById('f-estado').value='nuevo';
+    setTimeout(()=>{msg.className='form-msg';},3000);
+  }
+  btn.disabled=false; btn.textContent='Añadir usuario →';
+}
+
+async function deleteUser(id, nombre) {
+  if(!confirm('¿Eliminar a '+nombre+'?'))return;
+  const{error}=await sb.from('usuarios').delete().eq('id',id);
+  if(error){showToast('Error al eliminar');return;}
+  allUsers=allUsers.filter(u=>u.id!==id);
+  renderAll(); showToast('Usuario eliminado');
+}
+
 function exportCSV() {
-  const header = ['Nombre','Rol','Zona','Teléfono','Email','Fecha registro'];
-  const rows = allUsers.map(u => {
-    const fecha = u.created_at ? new Date(u.created_at).toLocaleDateString('es-ES') : '';
-    return [u.nombre||'',u.rol||'',u.zona||'',u.telefono||'',u.email||'',fecha];
+  const header=['Nombre','Rol','Zona','Teléfono','Email','Estado','Fecha'];
+  const rows=allUsers.map(u=>{
+    const f=u.created_at?new Date(u.created_at).toLocaleDateString('es-ES'):'';
+    return[u.nombre||'',u.rol||'',u.zona||'',u.telefono||'',u.email||'',u.estado||'',f];
   });
-  const csv = [header,...rows].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
-  const a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
-  a.download = 'strabe-usuarios-'+new Date().toISOString().slice(0,10)+'.csv';
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  const csv=[header,...rows].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
+  a.download='strabe-usuarios-'+new Date().toISOString().slice(0,10)+'.csv';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
   showToast('CSV exportado ('+allUsers.length+' usuarios)');
 }
 
-function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),3000);
 }
 </script>
