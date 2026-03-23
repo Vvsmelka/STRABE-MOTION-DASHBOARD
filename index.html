@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strabe Motion — Dashboard de Validación</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sm-green:        #0D4A3E;
+      --sm-green-light:  #1a6155;
+      --sm-green-dark:   #092e27;
+      --sm-gold:         #C9A96E;
+      --sm-gold-light:   #dfc08e;
+      --sm-gold-muted:   #a8875a;
+      --sm-cream:        #f5efe4;
+      --sm-cream-dark:   #e8dece;
+      --sm-text:         #1a1a1a;
+      --sm-text-muted:   #5a5a5a;
+      --sm-border:       rgba(201,169,110,0.25);
+      --sm-border-strong:rgba(201,169,110,0.5);
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--sm-cream);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--sm-text);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ─── TOPBAR ─── */
+    .topbar {
+      background: var(--sm-green);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(201,169,110,0.3);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .logo-area { display: flex; align-items: center; gap: 10px; }
+    .logo-s { width: 36px; height: 36px; }
+    .logo-text { font-family: 'Cormorant Garamond', serif; color: var(--sm-gold); letter-spacing: 0.18em; }
+    .logo-text .brand-name { font-size: 19px; font-weight: 600; display: block; line-height: 1.1; }
+    .logo-text .brand-sub  { font-size: 11px; font-weight: 400; letter-spacing: 0.22em; color: var(--sm-gold-muted); display: block; }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .phase-badge {
+      background: rgba(201,169,110,0.15);
+      border: 1px solid var(--sm-border-strong);
+      color: var(--sm-gold-light);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    .topbar-date { color: rgba(201,169,110,0.55); font-size: 12px; letter-spacing: 0.04em; }
+
+    /* ─── MAIN ─── */
+    .main { padding: 28px 28px 48px; max-width: 1200px; margin: 0 auto; }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      color: var(--sm-gold-muted);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      margin-top: 28px;
+    }
+    .section-title:first-child { margin-top: 0; }
+
+    /* ─── METRIC CARDS ─── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .metric-card {
+      background: var(--sm-green);
+      border: 1px solid rgba(201,169,110,0.2);
+      border-radius: 12px;
+      padding: 18px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .metric-card::after {
+      content: '';
+      position: absolute;
+      top: -20px; right: -20px;
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,169,110,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .metric-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: rgba(201,169,110,0.5);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    .metric-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 34px;
+      font-weight: 600;
+      color: var(--sm-gold);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .metric-sub { font-size: 11px; color: rgba(201,169,110,0.4); }
+    .metric-bar {
+      margin-top: 12px;
+      height: 3px;
+      background: rgba(201,169,110,0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .metric-bar-fill {
+      height: 100%;
+      background: var(--sm-gold);
+      border-radius: 2px;
+      opacity: 0.7;
+      transition: width 0.6s ease;
+    }
+
+    /* ─── CONTENT GRID ─── */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* ─── PANEL ─── */
+    .panel {
+      background: #fff;
+      border: 1px solid var(--sm-border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .panel-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--sm-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(13,74,62,0.025);
+    }
+    .panel-title { font-size: 13px; font-weight: 500; color: var(--sm-green); letter-spacing: 0.04em; }
+    .panel-action {
+      font-size: 11px;
+      color: var(--sm-gold-muted);
+      cursor: pointer;
+      letter-spacing: 0.06em;
+      font-weight: 500;
+      background: none;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      transition: color 0.15s;
+    }
+    .panel-action:hover { color: var(--sm-green); }
+
+    /* ─── FILTERS ─── */
+    .filter-row {
+      display: flex;
+      gap: 6px;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--sm-border);
+      background: rgba(245,239,228,0.35);
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      font-size: 11px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--sm-border-strong);
+      background: transparent;
+      color: var(--sm-text-muted);
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      letter-spacing: 0.05em;
+      font-weight: 400;
+      transition: all 0.15s;
+    }
+    .filter-btn.active  { background: var(--sm-green); color: var(--sm-gold); border-color: var(--sm-green); }
+    .filter-btn:hover:not(.active) { border-color: var(--sm-green); color: var(--sm-green); }
+
+    /* ─── TABLE ─── */
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      padding: 10px 20px;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sm-text-muted);
+      text-align: left;
+      background: rgba(245,239,228,0.3);
+      border-bottom: 1px solid var(--sm-border);
+    }
+    tbody tr {
+      border-bottom: 1px solid rgba(201,169,110,0.1);
+      transition: background 0.12s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(13,74,62,0.03); }
+    tbody td {
+      padding: 12px 20px;
+      font-size: 13px;
+      color: var(--sm-text);
+      vertical-align: middle;
+    }
+    .td-name { font-weight: 500; }
+    .td-muted { color: var(--sm-text-muted); font-size: 12px; }
+    .empty-row td { text-align: center; color: var(--sm-text-muted); padding: 32px 20px; font-size: 13px; }
+
+    /* ─── BADGES ─── */
+    .role-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      padding: 3px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+    .role-conductor   { background: rgba(13,74,62,0.1);   color: var(--sm-green);      border: 1px solid rgba(13,74,62,0.2); }
+    .role-propietario { background: rgba(201,169,110,0.12); color: var(--sm-gold-muted); border: 1px solid rgba(201,169,110,0.3); }
+
+    .status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .dot-nuevo      { background: #2a9d6f; }
+    .dot-contactado { background: var(--sm-gold); }
+    .dot-confirmado { background: var(--sm-green); }
+    .status-text { font-size: 12px; vertical-align: middle; }
+
+    .zona-tag {
+      font-size: 11px;
+      color: var(--sm-text-muted);
+      background: rgba(245,239,228,0.8);
+      border: 1px solid var(--sm-border);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    /* ─── SIDE PANEL ─── */
+    .side-panel { display: flex; flex-direction: column; gap: 16px; }
+
+    /* ─── FORM ─── */
+    .form-panel { background: #fff; border: 1px solid var(--sm-border); border-radius: 12px; overflow: hidden; }
+    .form-inner { padding: 18px 20px; }
+
+    .role-toggle { display: flex; gap: 6px; margin-bottom: 14px; }
+    .role-toggle-btn {
+      flex: 1;
+      padding: 8px 0;
+      font-size: 11px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      font-weight: 500;
+      border-radius: 8px;
+      border: 1px solid var(--sm-border-strong);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--sm-text-muted);
+    }
+    .role-toggle-btn.active-conductor   { background: var(--sm-green); color: var(--sm-gold);  border-color: var(--sm-green); }
+    .role-toggle-btn.active-propietario { background: var(--sm-gold);  color: var(--sm-green); border-color: var(--sm-gold); }
+
+    .form-group { margin-bottom: 12px; }
+    .form-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sm-text-muted);
+      margin-bottom: 5px;
+      display: block;
+    }
+    .form-input, .form-select {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--sm-border-strong);
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--sm-text);
+      background: var(--sm-cream);
+      font-family: 'DM Sans', sans-serif;
+      outline: none;
+      transition: border-color 0.15s, background 0.15s;
+      appearance: none;
+    }
+    .form-input:focus, .form-select:focus { border-color: var(--sm-green); background: #fff; }
+    .form-input::placeholder { color: #bbb; }
+
+    .submit-btn {
+      width: 100%;
+      padding: 11px;
+      background: var(--sm-green);
+      color: var(--sm-gold);
+      border: none;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: background 0.15s;
+      margin-top: 6px;
+    }
+    .submit-btn:hover { background: var(--sm-green-light); }
+    .submit-btn:active { transform: scale(0.99); }
+
+    /* ─── PROGRESS ─── */
+    .progress-panel {
+      background: var(--sm-green);
+      border: 1px solid rgba(201,169,110,0.2);
+      border-radius: 12px;
+      padding: 20px 22px;
+    }
+    .progress-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      color: var(--sm-gold);
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .progress-item { margin-bottom: 16px; }
+    .progress-item:last-child { margin-bottom: 0; }
+    .progress-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
+    }
+    .progress-label { font-size: 12px; color: rgba(201,169,110,0.65); }
+    .progress-count {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      color: var(--sm-gold);
+    }
+    .progress-track {
+      height: 4px;
+      background: rgba(201,169,110,0.12);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--sm-gold);
+      border-radius: 2px;
+      opacity: 0.75;
+      transition: width 0.6s ease;
+    }
+    .progress-goal {
+      font-size: 10px;
+      color: rgba(201,169,110,0.35);
+      margin-top: 5px;
+      letter-spacing: 0.08em;
+    }
+
+    /* ─── TOAST ─── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--sm-green);
+      border: 1px solid rgba(201,169,110,0.45);
+      color: var(--sm-gold-light);
+      padding: 11px 20px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.25s, transform 0.25s;
+      pointer-events: none;
+      z-index: 999;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .content-grid { grid-template-columns: 1fr; }
+      .side-panel { flex-direction: column; }
+    }
+    @media (max-width: 600px) {
+      .metrics-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .main { padding: 20px 16px 40px; }
+      .topbar { padding: 12px 16px; }
+      .topbar-date { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="logo-area">
+      <svg class="logo-s" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M26 10C23.5 8 20.5 7.5 17.5 8C13 9 10 13 11 17C11.8 20 15 21.5 18 22.5C21.5 23.8 23.5 26 22.5 29C21.5 31.5 17.5 32.5 14.5 31.5C12.2 30.7 10.5 29 10 27.5" stroke="#C9A96E" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <div class="logo-text">
+        <span class="brand-name">STRABE</span>
+        <span class="brand-sub">MOTION</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="phase-badge">Fase Validación</span>
+      <span class="topbar-date" id="today-date"></span>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- METRICS -->
+    <p class="section-title">Resumen de validación</p>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Conductores</div>
+        <div class="metric-value" id="m-conductores">—</div>
+        <div class="metric-sub">objetivo 500</div>
+        <div class="metric-bar"><div class="metric-bar-fill" id="mb-conductores" style="width:0%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Propietarios</div>
+        <div class="metric-value" id="m-propietarios">—</div>
+        <div class="metric-sub">objetivo 50</div>
+        <div class="metric-bar"><div class="metric-bar-fill" id="mb-propietarios" style="width:0%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Total leads</div>
+        <div class="metric-value" id="m-total">—</div>
+        <div class="metric-sub">en lista de espera</div>
+        <div class="metric-bar"><div class="metric-bar-fill" id="mb-total" style="width:0%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">% Propietarios</div>
+        <div class="metric-value" id="m-ratio">—</div>
+        <div class="metric-sub">ratio p/c</div>
+        <div class="metric-bar"><div class="metric-bar-fill" id="mb-ratio" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- CONTENT GRID -->
+    <div class="content-grid">
+
+      <!-- LEFT: TABLE -->
+      <div>
+        <p class="section-title" style="margin-top:0">Lista de espera</p>
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Leads registrados</span>
+            <button class="panel-action" onclick="exportCSV()">↓ Exportar CSV</button>
+          </div>
+          <div class="filter-row">
+            <button class="filter-btn active" onclick="filterLeads('todos', this)">Todos</button>
+            <button class="filter-btn" onclick="filterLeads('conductor', this)">Conductores</button>
+            <button class="filter-btn" onclick="filterLeads('propietario', this)">Propietarios</button>
+            <button class="filter-btn" onclick="filterLeads('nuevo', this)">Nuevos</button>
+            <button class="filter-btn" onclick="filterLeads('confirmado', this)">Confirmados</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Rol</th>
+                <th>Zona</th>
+                <th>Estado</th>
+                <th>Email</th>
+                <th>Fecha</th>
+              </tr>
+            </thead>
+            <tbody id="leads-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RIGHT: FORM + PROGRESS -->
+      <div class="side-panel">
+        <p class="section-title" style="margin-top:0">Añadir lead</p>
+        <div class="form-panel">
+          <div class="form-inner">
+            <div class="role-toggle">
+              <button class="role-toggle-btn active-conductor" id="btn-conductor" onclick="setRole('conductor')">Conductor</button>
+              <button class="role-toggle-btn" id="btn-propietario" onclick="setRole('propietario')">Propietario</button>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-nombre">Nombre completo</label>
+              <input class="form-input" id="f-nombre" type="text" placeholder="Ej. Iker Madariaga" autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-email">Email</label>
+              <input class="form-input" id="f-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-zona">Zona</label>
+              <select class="form-select" id="f-zona">
+                <option value="">Seleccionar zona</option>
+                <option>Abando</option>
+                <option>Deusto</option>
+                <option>Santutxu</option>
+                <option>Basurto</option>
+                <option>Casco Viejo</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-estado">Estado inicial</label>
+              <select class="form-select" id="f-estado">
+                <option value="nuevo">Nuevo</option>
+                <option value="contactado">Contactado</option>
+                <option value="confirmado">Confirmado</option>
+              </select>
+            </div>
+            <button class="submit-btn" onclick="addLead()">Registrar lead →</button>
+          </div>
+        </div>
+
+        <div class="progress-panel">
+          <div class="progress-heading">Progreso hacia MVP</div>
+          <div class="progress-item">
+            <div class="progress-row">
+              <span class="progress-label">Conductores</span>
+              <span class="progress-count" id="p-conductores">— / 500</span>
+            </div>
+            <div class="progress-track"><div class="progress-fill" id="pf-conductores" style="width:0%"></div></div>
+            <div class="progress-goal" id="pg-conductores">Cargando...</div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-row">
+              <span class="progress-label">Propietarios</span>
+              <span class="progress-count" id="p-propietarios">— / 50</span>
+            </div>
+            <div class="progress-track"><div class="progress-fill" id="pf-propietarios" style="width:0%"></div></div>
+            <div class="progress-goal" id="pg-propietarios">Cargando...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ─── STATE ───────────────────────────────────────────────
+    const STORAGE_KEY = 'strabe_leads_v1';
+
+    const defaultLeads = [
+      { id: 1, nombre: "Amaia Etxeberria",  rol: "conductor",    zona: "Abando",      estado: "nuevo",      email: "amaia@ejemplo.com",  fecha: "23/03/2026" },
+      { id: 2, nombre: "Joseba Urrutia",    rol: "propietario",  zona: "Deusto",      estado: "confirmado", email: "joseba@ejemplo.com", fecha: "22/03/2026" },
+      { id: 3, nombre: "Miren Aguirre",     rol: "conductor",    zona: "Casco Viejo", estado: "contactado", email: "miren@ejemplo.com",  fecha: "22/03/2026" },
+      { id: 4, nombre: "Unai Larrea",       rol: "propietario",  zona: "Santutxu",    estado: "nuevo",      email: "unai@ejemplo.com",   fecha: "21/03/2026" },
+      { id: 5, nombre: "Ane Mendiburu",     rol: "conductor",    zona: "Basurto",     estado: "confirmado", email: "ane@ejemplo.com",    fecha: "21/03/2026" },
+      { id: 6, nombre: "Gorka Iriarte",     rol: "conductor",    zona: "Abando",      estado: "nuevo",      email: "gorka@ejemplo.com",  fecha: "20/03/2026" },
+      { id: 7, nombre: "Leire Zubiaurre",   rol: "propietario",  zona: "Deusto",      estado: "contactado", email: "leire@ejemplo.com",  fecha: "20/03/2026" },
+      { id: 8, nombre: "Iñigo Arteaga",     rol: "conductor",    zona: "Casco Viejo", estado: "confirmado", email: "inigo@ejemplo.com",  fecha: "19/03/2026" },
+    ];
+
+    function loadLeads() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return stored ? JSON.parse(stored) : defaultLeads;
+      } catch(e) { return defaultLeads; }
+    }
+
+    function saveLeads(arr) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); } catch(e) {}
+    }
+
+    let leads = loadLeads();
+    let currentFilter = 'todos';
+    let roleSelected  = 'conductor';
+    let nextId = leads.length ? Math.max(...leads.map(l => l.id)) + 1 : 1;
+
+    // ─── ROLE TOGGLE ─────────────────────────────────────────
+    function setRole(r) {
+      roleSelected = r;
+      document.getElementById('btn-conductor').className   = 'role-toggle-btn' + (r === 'conductor'   ? ' active-conductor'   : '');
+      document.getElementById('btn-propietario').className = 'role-toggle-btn' + (r === 'propietario' ? ' active-propietario' : '');
+    }
+
+    // ─── RENDER TABLE ─────────────────────────────────────────
+    function renderTable() {
+      const tbody = document.getElementById('leads-body');
+      let data = leads;
+      if (currentFilter === 'conductor')   data = leads.filter(l => l.rol    === 'conductor');
+      if (currentFilter === 'propietario') data = leads.filter(l => l.rol    === 'propietario');
+      if (currentFilter === 'nuevo')       data = leads.filter(l => l.estado === 'nuevo');
+      if (currentFilter === 'confirmado')  data = leads.filter(l => l.estado === 'confirmado');
+
+      if (!data.length) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No hay leads en este filtro</td></tr>';
+        return;
+      }
+
+      const dotClass   = { nuevo: 'dot-nuevo', contactado: 'dot-contactado', confirmado: 'dot-confirmado' };
+      const estadoText = { nuevo: 'Nuevo', contactado: 'Contactado', confirmado: 'Confirmado' };
+
+      tbody.innerHTML = data.map(l => `
+        <tr>
+          <td class="td-name">${esc(l.nombre)}</td>
+          <td><span class="role-badge ${l.rol === 'conductor' ? 'role-conductor' : 'role-propietario'}">${l.rol}</span></td>
+          <td><span class="zona-tag">${esc(l.zona)}</span></td>
+          <td>
+            <span class="status-dot ${dotClass[l.estado] || 'dot-nuevo'}"></span>
+            <span class="status-text">${estadoText[l.estado] || l.estado}</span>
+          </td>
+          <td class="td-muted">${esc(l.email)}</td>
+          <td class="td-muted">${esc(l.fecha)}</td>
+        </tr>
+      `).join('');
+    }
+
+    // ─── FILTER ───────────────────────────────────────────────
+    function filterLeads(f, btn) {
+      currentFilter = f;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderTable();
+    }
+
+    // ─── METRICS ──────────────────────────────────────────────
+    function updateMetrics() {
+      const c = leads.filter(l => l.rol === 'conductor').length;
+      const p = leads.filter(l => l.rol === 'propietario').length;
+      const total = leads.length;
+      const ratio = total > 0 ? Math.round((p / c) * 100) / 100 : 0;
+
+      document.getElementById('m-conductores').textContent  = c;
+      document.getElementById('m-propietarios').textContent = p;
+      document.getElementById('m-total').textContent        = total;
+      document.getElementById('m-ratio').textContent        = c > 0 ? ratio.toFixed(2) : '—';
+
+      const cp = Math.min(Math.round((c / 500) * 100), 100);
+      const pp = Math.min(Math.round((p / 50)  * 100), 100);
+
+      document.getElementById('mb-conductores').style.width  = cp + '%';
+      document.getElementById('mb-propietarios').style.width = pp + '%';
+      document.getElementById('mb-total').style.width = Math.min(Math.round((total / 550) * 100), 100) + '%';
+      document.getElementById('mb-ratio').style.width = Math.min(ratio * 100, 100) + '%';
+
+      document.getElementById('p-conductores').textContent  = c + ' / 500';
+      document.getElementById('p-propietarios').textContent = p + ' / 50';
+      document.getElementById('pf-conductores').style.width  = cp + '%';
+      document.getElementById('pf-propietarios').style.width = pp + '%';
+      document.getElementById('pg-conductores').textContent  = c  >= 500 ? '¡Objetivo alcanzado!' : 'Faltan ' + (500 - c);
+      document.getElementById('pg-propietarios').textContent = p  >= 50  ? '¡Objetivo alcanzado!' : 'Faltan ' + (50  - p);
+    }
+
+    // ─── ADD LEAD ─────────────────────────────────────────────
+    function addLead() {
+      const nombre = document.getElementById('f-nombre').value.trim();
+      const email  = document.getElementById('f-email').value.trim();
+      const zona   = document.getElementById('f-zona').value;
+      const estado = document.getElementById('f-estado').value;
+
+      if (!nombre || !email || !zona) {
+        showToast('Completa todos los campos obligatorios');
+        return;
+      }
+      if (!isValidEmail(email)) {
+        showToast('Introduce un email válido');
+        return;
+      }
+
+      const now   = new Date();
+      const fecha = [String(now.getDate()).padStart(2,'0'), String(now.getMonth()+1).padStart(2,'0'), now.getFullYear()].join('/');
+
+      leads.unshift({ id: nextId++, nombre, rol: roleSelected, zona, estado, email, fecha });
+      saveLeads(leads);
+      renderTable();
+      updateMetrics();
+
+      document.getElementById('f-nombre').value = '';
+      document.getElementById('f-email').value  = '';
+      document.getElementById('f-zona').value   = '';
+      document.getElementById('f-estado').value = 'nuevo';
+
+      showToast('Lead registrado correctamente');
+    }
+
+    // ─── EXPORT CSV ───────────────────────────────────────────
+    function exportCSV() {
+      const header = ['ID', 'Nombre', 'Rol', 'Zona', 'Estado', 'Email', 'Fecha'];
+      const rows   = leads.map(l => [l.id, l.nombre, l.rol, l.zona, l.estado, l.email, l.fecha]);
+      const csv    = [header, ...rows].map(r => r.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',')).join('\n');
+      const blob   = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+      const url    = URL.createObjectURL(blob);
+      const a      = document.createElement('a');
+      a.href       = url;
+      a.download   = 'strabe-motion-leads-' + new Date().toISOString().slice(0,10) + '.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('CSV exportado (' + leads.length + ' leads)');
+    }
+
+    // ─── TOAST ───────────────────────────────────────────────
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2800);
+    }
+
+    // ─── HELPERS ─────────────────────────────────────────────
+    function esc(str) {
+      return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function isValidEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+
+    // ─── INIT ─────────────────────────────────────────────────
+    document.getElementById('today-date').textContent = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+    renderTable();
+    updateMetrics();
+  </script>
+
+</body>
+</html>
